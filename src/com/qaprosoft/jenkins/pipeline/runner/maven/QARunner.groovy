@@ -110,13 +110,13 @@ public class QARunner extends AbstractRunner {
 
                 try {
                     prepare()
-                    if (!isUpdated(currentBuild,"**.xml,**/zafira.properties") && onlyUpdated) {
-                        logger.warn("do not continue scanner as none of suite was updated ( *.xml )")
-                        return
-                    }
+                    //if (!isUpdated(currentBuild,"**.xml,**/zafira.properties") && onlyUpdated) {
+                    //    logger.warn("do not continue scanner as none of suite was updated ( *.xml )")
+                    //    return
+                    //}
                     scan()
-                    getJenkinsJobsScanResult(currentBuild.rawBuild)
                     executeSonarFullScan("carina-demo", "carina-demo", "demo")
+                    getJenkinsJobsScanResult(currentBuild.rawBuild)
                 } catch (Exception e) {
                     logger.error("Scan failed.\n" + e.getMessage())
                     getJenkinsJobsScanResult(null)
