@@ -3,15 +3,16 @@
 
 // The call(body) method in any file in workflowLibs.git/vars is exposed as a
 // method with the same name as the file.
-def call() {
+def call(body) {
     def config = [:]
-    log.info "Starting2"
-//    log.info "Starting"
-//    body.resolveStrategy = Closure.DELEGATE_FIRST
-//    body.delegate = config
-//    body()
-//    stage 'checkout'
-//    node {
+
+    body.resolveStrategy = Closure.DELEGATE_FIRST
+    body.delegate = config
+    body()
+    stage 'checkout'
+    node {
+        println "Starting1"
+        log.info "Starting2"
 //        println body.dump()
 //        println config.dump()
 //        checkout scm
@@ -21,5 +22,5 @@ def call() {
 //        }
 //        stage 'post'
 //        sh config.postScript
-//    }
+    }
 }
