@@ -1,11 +1,12 @@
-package com.qaprosoft.jenkins.pipeline.runner.maven
+
 // See https://github.com/jenkinsci/workflow-cps-global-lib-plugin
 
 // The call(body) method in any file in workflowLibs.git/vars is exposed as a
 // method with the same name as the file.
-def call(body) {
+def call() {
     def config = [:]
-    log.info 'Starting'
+    println "Starting"
+//    log.info "Starting"
 //    body.resolveStrategy = Closure.DELEGATE_FIRST
 //    body.delegate = config
 //    body()
