@@ -5,7 +5,7 @@
 // method with the same name as the file.
 def call() {
     def config = [:]
-    println "Starting"
+    log.info "Starting2"
 //    log.info "Starting"
 //    body.resolveStrategy = Closure.DELEGATE_FIRST
 //    body.delegate = config
