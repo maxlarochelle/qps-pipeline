@@ -14,7 +14,7 @@
  * limitations under the License.
  *******************************************************************************/
 
-public static enum LogLevel {
+public enum LogLevel {
 
     DEBUG(1),
     INFO(2),
