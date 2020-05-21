@@ -14,8 +14,9 @@
  * limitations under the License.
  *******************************************************************************/
 
+import static com.qaprosoft.jenkins.Utils.*
+ 
 public enum LogLevel {
-
     DEBUG(1),
     INFO(2),
     WARN(3),
@@ -27,23 +28,29 @@ public enum LogLevel {
     }
 }
 
-public enum ContextType {
-    JOB_DSL,
-    PIPELINE
+
+//pipelineLogLevel = context.binding.variables.get("QPS_PIPELINE_LOG_LEVEL") ? LogLevel.valueOf(context.binding.variables.QPS_PIPELINE_LOG_LEVEL) : LogLevel.valueOf(context.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL"))
+pipelineLogLevel = LogLevel.DEBUG
+
+public debug(message){
+    log(LogLevel.DEBUG, message)
 }
 
-def context
-LogLevel pipelineLogLevel
-ContextType contextType
-
-def info(message) {
-    echo "INFO: ${message}"
+public info(message){
+    log(LogLevel.INFO, message)
 }
 
-def warning(message) {
-    echo "WARNING: ${message}"
+public warn(message){
+    log(LogLevel.WARN, message)
 }
 
-def error(message) {
-    echo "ERROR: ${message}"
+public error(message){
+    log(LogLevel.ERROR, message)
+}
+
+private void log(LogLevel logLevel, message){
+    def logMessage = ""
+    if (logLevel.value >= pipelineLogLevel.value){
+        echo "${logLevel}: ${message}"
+    }
 }
