@@ -49,8 +49,10 @@ public error(message){
 }
 
 private void log(LogLevel logLevel, message){
-    def logMessage = ""
-    if (logLevel.value >= pipelineLogLevel.value){
+    echo "logLevel: ${logLevel}"
+    echo "message: ${message}"
+    
+    if (logLevel.value >= this.pipelineLogLevel.value){
         echo "${logLevel}: ${message}"
     }
 }
