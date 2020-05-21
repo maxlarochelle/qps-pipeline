@@ -97,7 +97,7 @@ class Repository extends BaseObject {
                 this.rootFolder = "/"
             } else {
                 def zafiraFields = Configuration.get("zafiraFields")
-                context.context.log.debug("zafiraFields: " + zafiraFields)
+                context.log.debug("zafiraFields: " + zafiraFields)
                 if (!isParamEmpty(zafiraFields) && zafiraFields.contains("zafira_service_url") && zafiraFields.contains("zafira_access_token")) {
                     def reportingServiceUrl = Configuration.get(Configuration.Parameter.ZAFIRA_SERVICE_URL)
                     def zafiraRefreshToken = Configuration.get(Configuration.Parameter.ZAFIRA_ACCESS_TOKEN)
