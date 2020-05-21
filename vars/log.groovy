@@ -30,7 +30,7 @@ public enum LogLevel {
 
 
 //pipelineLogLevel = context.binding.variables.get("QPS_PIPELINE_LOG_LEVEL") ? LogLevel.valueOf(context.binding.variables.QPS_PIPELINE_LOG_LEVEL) : LogLevel.valueOf(context.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL"))
-pipelineLogLevel = LogLevel.DEBUG
+def pipelineLogLevel = LogLevel.DEBUG
 
 public debug(message){
     log(LogLevel.DEBUG, message)
