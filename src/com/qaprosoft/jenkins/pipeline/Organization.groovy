@@ -28,9 +28,7 @@ class Organization extends BaseObject {
     protected Map dslObjects = new LinkedHashMap()
 	
 	protected def folderName
-    protected def pipelineLibrary
-    protected def runnerClass
-	protected def reportingServiceUrl
+    protected def reportingServiceUrl
 	protected def reportingAccessToken
     protected def sonarGithubOAuth
 
@@ -42,9 +40,6 @@ class Organization extends BaseObject {
 		zebrunnerUpdater = new ZebrunnerUpdater(context)
 		
 		this.folderName = Configuration.get("folderName")
-		
-        this.pipelineLibrary = Configuration.get("pipelineLibrary")
-        this.runnerClass =  Configuration.get("runnerClass")
 		
 		this.reportingServiceUrl = Configuration.get("reportingServiceUrl")
 		this.reportingAccessToken = Configuration.get("reportingAccessToken")
@@ -112,7 +107,6 @@ class Organization extends BaseObject {
         context.stage("Delete folder") {
             def folder = getJenkinsFolderByName(folderName)
             if (!isParamEmpty(folder)){
-                deleteUserFolderPermissions(folderName)
                 folder.delete()
             }
         }
@@ -122,7 +116,7 @@ class Organization extends BaseObject {
         context.stage("Delete user") {
             def user = User.getById(userName, false)
             if (!isParamEmpty(user)){
-                deleteUserGlobalPermissions(userName)
+                // deleteUserGlobalPermissions(userName)
                 user.delete()
             }
         }
@@ -135,7 +129,8 @@ class Organization extends BaseObject {
                 registerObject("project_folder", new FolderFactory(folder, ""))
             }
             registerObject("launcher_job", new LauncherJobFactory(folder, getPipelineScript(), "launcher", "Custom job launcher"))
-            registerObject("register_repository_job", new RegisterRepositoryJobFactory(folder, 'RegisterRepository', '', pipelineLibrary, runnerClass))
+
+            registerObject("register_repository_job", new RegisterRepositoryJobFactory(folder, 'RegisterRepository', ''))
 
             factoryRunner.run(dslObjects)
 		}
@@ -193,11 +188,11 @@ class Organization extends BaseObject {
         authStrategy.add(hudson.model.Hudson.READ, userName)
     }
 
-    protected def deleteUserGlobalPermissions(userName){
+/*    protected def deleteUserGlobalPermissions(userName){
         def authStrategy = Jenkins.instance.getAuthorizationStrategy()
         authStrategy.remove(hudson.model.Hudson.READ, userName)
     }
-
+*/
     protected def grantUserFolderPermissions(folderName, userName) {
         def folder = getJenkinsFolderByName(folderName)
         if (folder == null){
@@ -245,27 +240,6 @@ class Organization extends BaseObject {
         folder.save()
     }
 
-    protected def deleteUserFolderPermissions(folderName) {
-        def folder = getJenkinsFolderByName(folderName)
-        if (folder == null){
-            logger.error("No folder ${folderName} was detected.")
-            return
-        }
-        def authProperty = folder.properties.find {
-            it instanceof AuthorizationMatrixProperty
-        }
-
-        if (authProperty == null){
-            logger.info("Permissions has been already deleted for ${folderName}")
-            return
-        }
-
-        authProperty.setInheritanceStrategy(new NonInheritingStrategy())
-
-        authProperty.remove(it, userName)
-        folder.save()
-    }
-
     protected def generateIntegrationParemetersMap(userName, tokenValue, folder){
         def integrationParameters = [:]
         String jenkinsUrl = Configuration.get(Configuration.Parameter.JOB_URL).split("/job/")[0]
@@ -277,11 +251,7 @@ class Organization extends BaseObject {
     }
 
     protected String getPipelineScript() {
-        if ("QPS-Pipeline".equals(pipelineLibrary)) {
-            return "@Library(\'${pipelineLibrary}\')\nimport ${runnerClass};\nnew ${runnerClass}(this).build()"
-        } else {
-            return "@Library(\'QPS-Pipeline\')\n@Library(\'${pipelineLibrary}\')\nimport ${runnerClass};\nnew ${runnerClass}(this).build()"
-        }
+        return "@Library(\'${PIPELINE_LIBRARY}\')\nimport ${RUNNER_CLASS};\nnew ${RUNNER_CLASS}(this).build()"
     }
 
     protected clean() {
