@@ -49,6 +49,7 @@ public error(message){
 }
 
 private void log(LogLevel logLevel, message){
+    echo this.dump()
     echo "logLevel: ${logLevel}"
     echo "message: ${message}"
     
