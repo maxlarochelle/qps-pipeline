@@ -29,8 +29,8 @@ public enum LogLevel {
 }
 
 
-//pipelineLogLevel = context.binding.variables.get("QPS_PIPELINE_LOG_LEVEL") ? LogLevel.valueOf(context.binding.variables.QPS_PIPELINE_LOG_LEVEL) : LogLevel.valueOf(context.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL"))
-def pipelineLogLevel = LogLevel.DEBUG
+@Field final LogLevel pipelineLogLevel = this.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL")
+//def pipelineLogLevel = this.binding.variables.get("QPS_PIPELINE_LOG_LEVEL") ? LogLevel.valueOf(context.binding.variables.QPS_PIPELINE_LOG_LEVEL) : LogLevel.valueOf(this.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL"))
 
 public debug(message){
     log(LogLevel.DEBUG, message)
@@ -50,6 +50,7 @@ public error(message){
 
 private void log(LogLevel logLevel, message){
     echo this.dump()
+    echo "this.pipelineLogLevel: ${this.pipelineLogLevel}"
     echo "logLevel: ${logLevel}"
     echo "message: ${message}"
     
