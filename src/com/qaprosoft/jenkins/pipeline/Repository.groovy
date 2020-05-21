@@ -40,7 +40,7 @@ class Repository extends BaseObject {
     }
 
     public void register() {
-        logger.info("Repository->register")
+        log.info("Repository->register")
         Configuration.set("GITHUB_ORGANIZATION", Configuration.get(SCM_ORG))
         Configuration.set("GITHUB_HOST", Configuration.get(SCM_HOST))
         context.node('master') {
@@ -97,20 +97,20 @@ class Repository extends BaseObject {
                 this.rootFolder = "/"
             } else {
                 def zafiraFields = Configuration.get("zafiraFields")
-                logger.debug("zafiraFields: " + zafiraFields)
+                log.debug("zafiraFields: " + zafiraFields)
                 if (!isParamEmpty(zafiraFields) && zafiraFields.contains("zafira_service_url") && zafiraFields.contains("zafira_access_token")) {
                     def reportingServiceUrl = Configuration.get(Configuration.Parameter.ZAFIRA_SERVICE_URL)
                     def zafiraRefreshToken = Configuration.get(Configuration.Parameter.ZAFIRA_ACCESS_TOKEN)
-                    logger.debug("reportingServiceUrl: " + reportingServiceUrl)
-                    logger.debug("zafiraRefreshToken: " + zafiraRefreshToken)
+                    log.debug("reportingServiceUrl: " + reportingServiceUrl)
+                    log.debug("zafiraRefreshToken: " + zafiraRefreshToken)
                     if (!isParamEmpty(reportingServiceUrl) && !isParamEmpty(zafiraRefreshToken)){
                         Organization.registerReportingCredentials(repoFolder, reportingServiceUrl, zafiraRefreshToken)
                     }
                 }
             }
 
-            logger.debug("organization: " + Configuration.get(SCM_ORG))
-            logger.debug("rootFolder: " + this.rootFolder)
+            log.debug("organization: " + Configuration.get(SCM_ORG))
+            log.debug("rootFolder: " + this.rootFolder)
 
             // TODO: test with SZ his custom CI setup
             // there is no need to register organization_folder at all as this fucntionality is provided in dedicated RegisterOrganization job logic            
@@ -130,7 +130,7 @@ class Repository extends BaseObject {
                 repoFolder = this.rootFolder + "/" + repoFolder
             }
 
-            logger.debug("repoFolder: " + repoFolder)
+            log.debug("repoFolder: " + repoFolder)
 
             //Job build display name
             context.currentBuild.displayName = "#${buildNumber}|${Configuration.get(REPO)}|${Configuration.get(BRANCH)}"
@@ -149,7 +149,7 @@ class Repository extends BaseObject {
 
             def userId = isParamEmpty(Configuration.get("userId")) ? '' : Configuration.get("userId")
             def zafiraFields = isParamEmpty(Configuration.get("zafiraFields")) ? '' : Configuration.get("zafiraFields")
-            logger.error("zafiraFields: " + zafiraFields)
+            log.error("zafiraFields: " + zafiraFields)
 
             registerObject("hooks_view", new ListViewFactory(repoFolder, 'SYSTEM', null, ".*onPush.*|.*onPullRequest.*|.*CutBranch-.*|build"))
 
@@ -225,9 +225,9 @@ class Repository extends BaseObject {
 
     private void registerObject(name, object) {
         if (dslObjects.containsKey(name)) {
-            logger.warn("WARNING! key ${name} already defined and will be replaced!")
-            logger.info("Old Item: ${dslObjects.get(name).dump()}")
-            logger.info("New Item: ${object.dump()}")
+            log.warn("key ${name} already defined and will be replaced!")
+            log.info("Old Item: ${dslObjects.get(name).dump()}")
+            log.info("New Item: ${object.dump()}")
         }
         dslObjects.put(name, object)
     }
@@ -238,7 +238,7 @@ class Repository extends BaseObject {
             def token = Configuration.get(SCM_TOKEN)
             def jenkinsUser = !isParamEmpty(Configuration.get("jenkinsUser")) ? Configuration.get("jenkinsUser") : getBuildUser(context.currentBuild)
             if (updateJenkinsCredentials("token_" + jenkinsUser, jenkinsUser + " SCM token", user, token)) {
-                logger.info(jenkinsUser + " credentials were successfully registered.")
+                log.info(jenkinsUser + " credentials were successfully registered.")
             } else {
                 throw new RuntimeException("Required fields are missing.")
             }
