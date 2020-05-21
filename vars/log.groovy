@@ -28,7 +28,7 @@ public enum LogLevel {
     }
 }
 
-
+//TODO: test for pipeline and jobdsl
 @Field final LogLevel pipelineLogLevel = this.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL")
 //def pipelineLogLevel = this.binding.variables.get("QPS_PIPELINE_LOG_LEVEL") ? LogLevel.valueOf(context.binding.variables.QPS_PIPELINE_LOG_LEVEL) : LogLevel.valueOf(this.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL"))
 
@@ -49,12 +49,7 @@ public error(message){
 }
 
 private void log(LogLevel logLevel, message){
-    echo this.dump()
-    echo "this.pipelineLogLevel: ${this.pipelineLogLevel}"
-    echo "logLevel: ${logLevel}"
-    echo "message: ${message}"
-    
-    if (logLevel.value >= this.pipelineLogLevel.value){
+    if (logLevel.value >= this.pipelineLogLevel.value && !isParamEmpty(message)){
         echo "${logLevel}: ${message}"
     }
 }
