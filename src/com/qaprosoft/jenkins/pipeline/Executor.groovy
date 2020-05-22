@@ -324,7 +324,6 @@ public class Executor {
         boolean isApplied = false
         GhprbCause c = Ghprb.getCause(build)
         GhprbTrigger trigger = Ghprb.extractTrigger(build)
-        logger.info(build)
         GhprbPullRequest ghprbPullRequest = trigger.getRepository().getPullRequest(c.getPullID())
         for(ghLabel in ghprbPullRequest.getPullRequest().getLabels()) {
             if (ghLabel.getName() == label){
