@@ -32,7 +32,7 @@ public class DslFactory {
 
     public String getFullName() {
         if (folder != null && !folder.isEmpty()) {
-            _dslFactory.log.debug("FactoryFullName: ${folder}/${name}")
+            log.debug("FactoryFullName: ${folder}/${name}")
             //logger.debug("FactoryFullName: ${folder}/${name}")
             return "${folder}/${name}"
         } else {
@@ -42,7 +42,7 @@ public class DslFactory {
 
     // dynamically load properties from map to members
     public load(args) {
-        _dslFactory.log.debug("FactoryProperties: ${args.dump()}")
+        log.debug("FactoryProperties: ${args.dump()}")
         //logger.debug("FactoryProperties: ${args.dump()}")
         args.each {
             if (it.value != null) {
