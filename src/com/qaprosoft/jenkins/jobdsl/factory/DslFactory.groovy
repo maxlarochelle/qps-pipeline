@@ -1,6 +1,7 @@
 package com.qaprosoft.jenkins.jobdsl.factory
 
 import com.qaprosoft.jenkins.Logger
+import com.qaprosoft.jenkins.jobdsl.log
 
 public class DslFactory {
     def folder
@@ -10,12 +11,14 @@ public class DslFactory {
     def _dslFactory
     def clazz
     Logger logger
+    log logger2
 
     // ATTENTION! this is very important constructor. Please do not override on children level constructor with single argument
     DslFactory(dslFactory) {
         this._dslFactory = dslFactory
         this.clazz = this.getClass().getCanonicalName()
         this.logger = new Logger(_dslFactory)
+        this.logger2 = new log(_dslFactory)
     }
 
     DslFactory() {
@@ -32,8 +35,8 @@ public class DslFactory {
 
     public String getFullName() {
         if (folder != null && !folder.isEmpty()) {
-            log.debug("FactoryFullName: ${folder}/${name}")
-            //logger.debug("FactoryFullName: ${folder}/${name}")
+            logger.debug("FactoryFullName: ${folder}/${name}")
+            logger2.debug("FactoryFullName: ${folder}/${name}")
             return "${folder}/${name}"
         } else {
             return name
@@ -42,8 +45,8 @@ public class DslFactory {
 
     // dynamically load properties from map to members
     public load(args) {
-        log.debug("FactoryProperties: ${args.dump()}")
-        //logger.debug("FactoryProperties: ${args.dump()}")
+        logger.debug("FactoryProperties: ${args.dump()}")
+        logger2.debug("FactoryProperties: ${args.dump()}")
         args.each {
             if (it.value != null) {
                 this."${it.key}" = it.value
