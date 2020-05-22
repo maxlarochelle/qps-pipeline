@@ -1,5 +1,7 @@
 package com.qaprosoft
 
+import static com.qaprosoft.jenkins.Utils.*
+
 class Logger implements Serializable {
 
     public enum LogLevel {
