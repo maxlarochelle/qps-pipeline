@@ -39,8 +39,7 @@ class Logger implements Serializable {
     }
     
     private log(script, logLevel, message) {
-        // def pipelineLogLevel = script.binding.variables.get("QPS_PIPELINE_LOG_LEVEL") ? LogLevel.valueOf(script.binding.variables.QPS_PIPELINE_LOG_LEVEL) : LogLevel.valueOf(script.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL"))
-        def pipelineLogLevel = script.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL") ? LogLevel.valueOf(script.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL")) : LogLevel.valueOf("INFO")
+        def pipelineLogLevel = script.binding.variables.get("QPS_PIPELINE_LOG_LEVEL") ? LogLevel.valueOf(script.binding.variables.QPS_PIPELINE_LOG_LEVEL) : LogLevel.valueOf(script.env.getEnvironment().get("QPS_PIPELINE_LOG_LEVEL"))
         if (logLevel.value >= pipelineLogLevel.value && !isParamEmpty(message)){
             script.println "${logLevel}: ${message}"
         }
