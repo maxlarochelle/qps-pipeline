@@ -38,7 +38,7 @@ public class Runner extends AbstractRunner {
 			logger.info("Runner->onPullRequest")
 			sonar.setToken(getToken(Configuration.CREDS_SONAR_GITHUB_OAUTH_TOKEN))
 			sonar.scan(true)
-            logger.info("current build: " + context.currentBuild.rawBuild)
+            logger.info("current build: " + context.currentBuild)
 		}
 	}
 
