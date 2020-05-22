@@ -40,7 +40,7 @@ class Repository extends BaseObject {
     }
 
     public void register() {
-        context.log.info("Repository->register")
+        logger.info("Repository->register")
         Configuration.set("GITHUB_ORGANIZATION", Configuration.get(SCM_ORG))
         Configuration.set("GITHUB_HOST", Configuration.get(SCM_HOST))
         context.node('master') {
@@ -50,22 +50,23 @@ class Repository extends BaseObject {
                 clean()
             }
         }
-            // execute new _trigger-<repo> to regenerate other views/jobs/etc
-            def onPushJobLocation = Configuration.get(REPO) + "/onPush-" + Configuration.get(REPO)
+        
+        // execute new _trigger-<repo> to regenerate other views/jobs/etc
+        def onPushJobLocation = Configuration.get(REPO) + "/onPush-" + Configuration.get(REPO)
 
-            if (!isParamEmpty(this.rootFolder)) {
-                onPushJobLocation = this.rootFolder + "/" + onPushJobLocation
-            }
-            context.build job: onPushJobLocation,
-                    propagate: true,
-                    parameters: [
-                            context.string(name: 'repo', value: Configuration.get(REPO)),
-                            context.string(name: 'branch', value: Configuration.get(BRANCH)),
-                            context.booleanParam(name: 'onlyUpdated', value: false),
-                            context.string(name: 'removedConfigFilesAction', value: 'DELETE'),
-                            context.string(name: 'removedJobAction', value: 'DELETE'),
-                            context.string(name: 'removedViewAction', value: 'DELETE'),
-                    ]
+        if (!isParamEmpty(this.rootFolder)) {
+            onPushJobLocation = this.rootFolder + "/" + onPushJobLocation
+        }
+        context.build job: onPushJobLocation,
+                propagate: true,
+                parameters: [
+                        context.string(name: 'repo', value: Configuration.get(REPO)),
+                        context.string(name: 'branch', value: Configuration.get(BRANCH)),
+                        context.booleanParam(name: 'onlyUpdated', value: false),
+                        context.string(name: 'removedConfigFilesAction', value: 'DELETE'),
+                        context.string(name: 'removedJobAction', value: 'DELETE'),
+                        context.string(name: 'removedViewAction', value: 'DELETE'),
+                ]
     }
 
     public void create() {
@@ -97,20 +98,20 @@ class Repository extends BaseObject {
                 this.rootFolder = "/"
             } else {
                 def zafiraFields = Configuration.get("zafiraFields")
-                context.log.debug("zafiraFields: " + zafiraFields)
+                logger.debug("zafiraFields: " + zafiraFields)
                 if (!isParamEmpty(zafiraFields) && zafiraFields.contains("zafira_service_url") && zafiraFields.contains("zafira_access_token")) {
                     def reportingServiceUrl = Configuration.get(Configuration.Parameter.ZAFIRA_SERVICE_URL)
                     def zafiraRefreshToken = Configuration.get(Configuration.Parameter.ZAFIRA_ACCESS_TOKEN)
-                    context.log.debug("reportingServiceUrl: " + reportingServiceUrl)
-                    context.log.debug("zafiraRefreshToken: " + zafiraRefreshToken)
+                    logger.debug("reportingServiceUrl: " + reportingServiceUrl)
+                    logger.debug("zafiraRefreshToken: " + zafiraRefreshToken)
                     if (!isParamEmpty(reportingServiceUrl) && !isParamEmpty(zafiraRefreshToken)){
                         Organization.registerReportingCredentials(repoFolder, reportingServiceUrl, zafiraRefreshToken)
                     }
                 }
             }
 
-            context.log.debug("organization: " + Configuration.get(SCM_ORG))
-            context.log.debug("rootFolder: " + this.rootFolder)
+            logger.debug("organization: " + Configuration.get(SCM_ORG))
+            logger.debug("rootFolder: " + this.rootFolder)
 
             // TODO: test with SZ his custom CI setup
             // there is no need to register organization_folder at all as this fucntionality is provided in dedicated RegisterOrganization job logic            
@@ -130,7 +131,7 @@ class Repository extends BaseObject {
                 repoFolder = this.rootFolder + "/" + repoFolder
             }
 
-            context.log.debug("repoFolder: " + repoFolder)
+            logger.debug("repoFolder: " + repoFolder)
 
             //Job build display name
             context.currentBuild.displayName = "#${buildNumber}|${Configuration.get(REPO)}|${Configuration.get(BRANCH)}"
@@ -149,7 +150,7 @@ class Repository extends BaseObject {
 
             def userId = isParamEmpty(Configuration.get("userId")) ? '' : Configuration.get("userId")
             def zafiraFields = isParamEmpty(Configuration.get("zafiraFields")) ? '' : Configuration.get("zafiraFields")
-            context.log.debug("zafiraFields: " + zafiraFields)
+            logger.error("zafiraFields: " + zafiraFields)
 
             registerObject("hooks_view", new ListViewFactory(repoFolder, 'SYSTEM', null, ".*onPush.*|.*onPullRequest.*|.*CutBranch-.*|build"))
 
@@ -225,9 +226,9 @@ class Repository extends BaseObject {
 
     private void registerObject(name, object) {
         if (dslObjects.containsKey(name)) {
-            context.log.warn("key ${name} already defined and will be replaced!")
-            context.log.info("Old Item: ${dslObjects.get(name).dump()}")
-            context.log.info("New Item: ${object.dump()}")
+            logger.warn("key ${name} already defined and will be replaced!")
+            logger.info("Old Item: ${dslObjects.get(name).dump()}")
+            logger.info("New Item: ${object.dump()}")
         }
         dslObjects.put(name, object)
     }
@@ -238,7 +239,7 @@ class Repository extends BaseObject {
             def token = Configuration.get(SCM_TOKEN)
             def jenkinsUser = !isParamEmpty(Configuration.get("jenkinsUser")) ? Configuration.get("jenkinsUser") : getBuildUser(context.currentBuild)
             if (updateJenkinsCredentials("token_" + jenkinsUser, jenkinsUser + " SCM token", user, token)) {
-                context.log.info(jenkinsUser + " credentials were successfully registered.")
+                logger.info(jenkinsUser + " credentials were successfully registered.")
             } else {
                 throw new RuntimeException("Required fields are missing.")
             }
