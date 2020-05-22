@@ -6,7 +6,7 @@ class Logger2 implements Serializable {
     
     def script
 
-    log(script) {
+    Logger2(script) {
         this.script = script
     }
 
