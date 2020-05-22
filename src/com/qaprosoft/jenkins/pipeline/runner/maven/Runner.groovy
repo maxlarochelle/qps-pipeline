@@ -4,7 +4,7 @@ import com.qaprosoft.jenkins.Logger
 import com.qaprosoft.jenkins.pipeline.tools.scm.github.GitHub
 import com.qaprosoft.jenkins.pipeline.runner.AbstractRunner
 
-import com.qaprosoft.jenkins.pipeline.Executor.isLabelApplied
+import static com.qaprosoft.jenkins.pipeline.Executor.*
 //[VD] do not remove this important import!
 import com.qaprosoft.jenkins.pipeline.Configuration
 import com.qaprosoft.jenkins.pipeline.tools.maven.Maven
