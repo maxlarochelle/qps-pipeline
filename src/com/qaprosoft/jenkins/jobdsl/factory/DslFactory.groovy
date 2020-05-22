@@ -1,7 +1,7 @@
 package com.qaprosoft.jenkins.jobdsl.factory
 
 import com.qaprosoft.jenkins.Logger
-import com.qaprosoft.jenkins.jobdsl.log
+import com.qaprosoft.jenkins.jobdsl.Logger2
 
 public class DslFactory {
     def folder
@@ -11,14 +11,14 @@ public class DslFactory {
     def _dslFactory
     def clazz
     Logger logger
-    log logger2
+    Logger2 logger2
 
     // ATTENTION! this is very important constructor. Please do not override on children level constructor with single argument
     DslFactory(dslFactory) {
         this._dslFactory = dslFactory
         this.clazz = this.getClass().getCanonicalName()
         this.logger = new Logger(_dslFactory)
-        this.logger2 = new log(_dslFactory)
+        this.logger2 = new Logger2(_dslFactory)
     }
 
     DslFactory() {

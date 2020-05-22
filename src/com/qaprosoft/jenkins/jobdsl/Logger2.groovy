@@ -2,7 +2,7 @@ package com.qaprosoft.jenkins.jobdsl
 
 import com.qaprosoft.Logger
 
-class log implements Serializable {
+class Logger2 implements Serializable {
     
     def script
 
