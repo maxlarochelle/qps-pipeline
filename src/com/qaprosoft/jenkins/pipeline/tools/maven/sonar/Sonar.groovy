@@ -33,6 +33,8 @@ public class Sonar {
 
                 if (isPullRequest) {
                     scmClient.clonePR()
+                    if (Configuration.get("ghprbPullTitle").contains("build-snapshot") || isLabelApplied(context.currentBuild.rawBuild, "build-snapshot"))
+                        logger.info("yes")
                 } else {
                     // it should be non shallow clone anyway to support full static code analysis
                     scmClient.clonePush()

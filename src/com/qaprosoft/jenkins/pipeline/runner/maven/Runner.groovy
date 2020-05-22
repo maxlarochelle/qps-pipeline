@@ -39,8 +39,6 @@ public class Runner extends AbstractRunner {
 			logger.info("Runner->onPullRequest")
 			sonar.setToken(getToken(Configuration.CREDS_SONAR_GITHUB_OAUTH_TOKEN))
 			sonar.scan(true)
-            if (Configuration.get("ghprbPullTitle").contains("build-snapshot") || isLabelApplied(context.currentBuild.rawBuild, "build-snapshot"))
-                logger.info("yes")
 		}
 	}
 
