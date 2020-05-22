@@ -1,6 +1,5 @@
 package com.qaprosoft.jenkins.pipeline.integration.qtest
 
-import com.qaprosoft.jenkins.Logger
 import com.qaprosoft.jenkins.pipeline.integration.zafira.IntegrationTag
 import com.qaprosoft.jenkins.pipeline.integration.zafira.ZafiraClient
 import com.qaprosoft.jenkins.pipeline.Configuration
@@ -13,13 +12,11 @@ class QTestUpdater {
     private def context
     private ZafiraClient zc
     private QTestClient qTestClient
-    private Logger logger
 
     public QTestUpdater(context) {
         this.context = context
         zc = new ZafiraClient(context)
         qTestClient = new QTestClient(context)
-        logger = new Logger(context)
     }
 
     public void updateTestRun(uuid) {

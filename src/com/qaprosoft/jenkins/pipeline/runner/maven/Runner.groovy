@@ -1,6 +1,5 @@
 package com.qaprosoft.jenkins.pipeline.runner.maven
 
-import com.qaprosoft.jenkins.Logger
 import com.qaprosoft.jenkins.pipeline.tools.scm.github.GitHub
 import com.qaprosoft.jenkins.pipeline.runner.AbstractRunner
 
@@ -11,14 +10,12 @@ import com.qaprosoft.jenkins.pipeline.tools.maven.sonar.Sonar
 
 @Mixin([Maven])
 public class Runner extends AbstractRunner {
-    Logger logger
     Sonar sonar
 
     public Runner(context) {
         super(context)
         scmClient = new GitHub(context)
         sonar = new Sonar(context)
-        logger = new Logger(context)
     }
 
     //Events

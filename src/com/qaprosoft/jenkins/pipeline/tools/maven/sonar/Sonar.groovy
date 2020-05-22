@@ -1,6 +1,5 @@
 package com.qaprosoft.jenkins.pipeline.tools.maven.sonar
 
-import com.qaprosoft.jenkins.Logger
 import com.qaprosoft.jenkins.pipeline.Configuration
 import hudson.plugins.sonar.SonarGlobalConfiguration
 import com.qaprosoft.jenkins.pipeline.tools.maven.Maven
@@ -17,12 +16,10 @@ public class Sonar {
     protected static def githubToken
 
     protected def context
-    protected Logger logger
     protected ISCM scmClient
 
     public Sonar(context) {
         this.context = context
-        this.logger = new Logger(context)
         this.scmClient = new GitHub(context)
     }
 

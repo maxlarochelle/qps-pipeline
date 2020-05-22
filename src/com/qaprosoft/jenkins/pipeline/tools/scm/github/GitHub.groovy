@@ -1,6 +1,5 @@
 package com.qaprosoft.jenkins.pipeline.tools.scm.github
 
-import com.qaprosoft.jenkins.Logger
 import com.qaprosoft.jenkins.pipeline.tools.scm.ISCM
 import com.qaprosoft.jenkins.pipeline.Configuration
 import static com.qaprosoft.jenkins.pipeline.Executor.*
@@ -12,12 +11,10 @@ class GitHub implements ISCM {
     //TODO: rename into scmUrl as it covers both https and ssh cases
     protected def gitHtmlUrl
     protected def credentialsId
-    protected Logger logger
     protected def scmHost
 
     public GitHub(context) {
         this.context = context
-        logger = new Logger(context)
         scmHost = Configuration.get(Configuration.Parameter.GITHUB_HOST)
 		if(scmHost.contains("upnetix")) {
 			gitHtmlUrl = "https://\${GITHUB_HOST}/scm/\${GITHUB_ORGANIZATION}/${Configuration.get("repo")}"

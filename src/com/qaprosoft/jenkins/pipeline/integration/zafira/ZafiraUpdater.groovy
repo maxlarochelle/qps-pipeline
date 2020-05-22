@@ -1,6 +1,5 @@
 package com.qaprosoft.jenkins.pipeline.integration.zafira
 
-import com.qaprosoft.jenkins.Logger
 import com.qaprosoft.jenkins.pipeline.Configuration
 
 import static com.qaprosoft.jenkins.Utils.*
@@ -10,13 +9,11 @@ class ZafiraUpdater {
 
     private def context
     private ZafiraClient zc
-    private Logger logger
     private def testRun
 
     public ZafiraUpdater(context) {
         this.context = context
         zc = new ZafiraClient(context)
-        logger = new Logger(context)
     }
 
     def getTestRunByCiRunId(uuid) {

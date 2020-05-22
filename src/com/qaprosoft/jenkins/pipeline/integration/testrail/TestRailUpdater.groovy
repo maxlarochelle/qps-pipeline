@@ -1,7 +1,6 @@
 package com.qaprosoft.jenkins.pipeline.integration.testrail
 
 
-import com.qaprosoft.jenkins.Logger
 import com.qaprosoft.jenkins.pipeline.integration.zafira.StatusMapper
 import com.qaprosoft.jenkins.pipeline.Configuration
 
@@ -15,13 +14,11 @@ class TestRailUpdater {
     private def context
     private ZafiraClient zc
     private TestRailClient trc
-    private Logger logger
 
     public TestRailUpdater(context) {
         this.context = context
         zc = new ZafiraClient(context)
         trc = new TestRailClient(context)
-        logger = new Logger(context)
     }
 
     public void updateTestRun(uuid) {

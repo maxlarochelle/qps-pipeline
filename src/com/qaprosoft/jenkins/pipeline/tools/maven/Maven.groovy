@@ -1,7 +1,6 @@
 package com.qaprosoft.jenkins.pipeline.tools.maven
 
 import com.qaprosoft.jenkins.pipeline.Configuration
-import com.qaprosoft.jenkins.Logger
 
 import static com.qaprosoft.jenkins.pipeline.Executor.*
 
