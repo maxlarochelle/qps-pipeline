@@ -2,11 +2,11 @@ package com.qaprosoft.jenkins.jobdsl
 
 import com.qaprosoft.Logger
 
-class Logger2 implements Serializable {
+class Logger implements Serializable {
     
     def script
 
-    Logger2(script) {
+    Logger(script) {
         this.script = script
     }
 
