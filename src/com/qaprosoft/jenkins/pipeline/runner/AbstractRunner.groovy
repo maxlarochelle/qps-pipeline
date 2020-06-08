@@ -59,11 +59,11 @@ public abstract class AbstractRunner extends BaseObject {
     }
 
     protected void setBuildName() {
-        def displayNameParams = ['branch', 'suite', 'env', 'browser', 'browserVersion', 'locale', 'language']
+        def params = ['branch', 'suite', 'env', 'browser', 'browserVersion', 'locale', 'language']
 
         context.stage('Preparation') {
-            params.each {
-                if (!isParamEmpty(Configuration.get(it)) {
+            params.each{
+                if (!isParamEmpty(Configuration.get(it))) {
                     buildNameTemplate += BUILD_NAME_SEPARATOR + Configuration.get(it)
                 }
             }
