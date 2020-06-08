@@ -16,7 +16,6 @@ public abstract class AbstractRunner extends BaseObject {
 
     public AbstractRunner(context) {
         super(context)
-        setBuildName()
         initOrganization()
     }
 
