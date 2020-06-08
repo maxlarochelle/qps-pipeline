@@ -10,9 +10,13 @@ import static com.qaprosoft.jenkins.pipeline.Executor.*
 public abstract class AbstractRunner extends BaseObject {
     // organization folder name of the current job/runner
     protected String organization = ""
+    protected String buildNameTemplate = Configuration.get(Configuration.Parameter.BUILD_NUMBER)
+
+    protected final String BUILD_NAME_SEPARATOR = "|"
 
     public AbstractRunner(context) {
         super(context)
+        setBuildName()
         initOrganization()
     }
 
@@ -52,6 +56,19 @@ public abstract class AbstractRunner extends BaseObject {
      */
     protected def getOrgFolder() {
         return this.organization
+    }
+
+    protected void setBuildName() {
+        def displayNameParams = ['branch', 'suite', 'env', 'browser', 'browserVersion', 'locale', 'language']
+
+        context.stage('Preparation') {
+            params.each {
+                if (!isParamEmpty(Configuration.get(it)) {
+                    buildNameTemplate += BUILD_NAME_SEPARATOR + Configuration.get(it)
+                }
+            }
+            currentBuild.displayName = buildNameTemplate
+        }
     }
 
     /*

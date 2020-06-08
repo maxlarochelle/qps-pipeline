@@ -698,33 +698,8 @@ public class QARunner extends Runner {
     protected void prepareBuild(currentBuild) {
 
         Configuration.set("BUILD_USER_ID", getBuildUser(currentBuild))
-
-        String buildNumber = Configuration.get(Configuration.Parameter.BUILD_NUMBER)
-        String suite = Configuration.get("suite")
-        String branch = Configuration.get("branch")
-        String env = Configuration.get("env")
-        String browser = getBrowser()
-        String browserVersion = getBrowserVersion()
-		String locale = Configuration.get("locale")
-		String language = Configuration.get("language")
-
         context.stage('Preparation') {
-            currentBuild.displayName = "#${buildNumber}|${suite}|${branch}"
-            if (!isParamEmpty(env)) {
-                currentBuild.displayName += "|" + "${env}"
-            }
-            if (!isParamEmpty(browser)) {
-                currentBuild.displayName += "|${browser}"
-            }
-            if (!isParamEmpty(browserVersion)) {
-                currentBuild.displayName += "|${browserVersion}"
-            }
-			if (!isParamEmpty(locale)) {
-				currentBuild.displayName += "|${locale}"
-			}
-			if (!isParamEmpty(language)) {
-				currentBuild.displayName += "|${language}"
-			}
+        	super.setBuildName()
             currentBuild.description = "${suite}"
             if (isMobile()) {
                 //this is mobile test
