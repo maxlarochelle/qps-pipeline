@@ -83,8 +83,8 @@ class TestRailUpdater {
 //        def testRailCaseIds = parseCases(projectId, suiteId)
 //        def filteredCaseResultMap = filterCaseResultMap(caseResultMap, testRailCaseIds)
 
-//        testResultMap = filterTests(testRailRunId, assignedToId, testRailCaseIds, testResultMap, filteredCaseResultMap)
-        addResults(testRailRunId, caseResultMap)
+        testResultMap = filterTests(testRailRunId, assignedToId, testRailCaseIds, testResultMap, caseResultMap)
+        addResults(testRailRunId, testResultMap)
     }
 
     protected def getTestRailRunId(testRunName, createdBy, milestoneId, projectId, suiteId, createdAfter, searchInterval){
