@@ -80,7 +80,7 @@ class TestRailUpdater {
 
         // get all cases from TestRail by project and suite and compare with exported from Zafira
         // only cases available in both maps should be registered later
-//        def testRailCaseIds = parseCases(projectId, suiteId)
+        def testRailCaseIds = parseCases(projectId, suiteId)
 //        def filteredCaseResultMap = filterCaseResultMap(caseResultMap, testRailCaseIds)
 
         testResultMap = filterTests(testRailRunId, assignedToId, testResultMap, caseResultMap)
