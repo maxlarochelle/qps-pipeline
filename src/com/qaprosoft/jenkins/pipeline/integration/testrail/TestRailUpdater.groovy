@@ -83,7 +83,7 @@ class TestRailUpdater {
 //        def testRailCaseIds = parseCases(projectId, suiteId)
 //        def filteredCaseResultMap = filterCaseResultMap(caseResultMap, testRailCaseIds)
 
-        testResultMap = filterTests(testRailRunId, assignedToId, testRailCaseIds, testResultMap, caseResultMap)
+        testResultMap = filterTests(testRailRunId, assignedToId, testResultMap, caseResultMap)
         addResults(testRailRunId, testResultMap)
     }
 
@@ -170,28 +170,24 @@ class TestRailUpdater {
         return filteredCaseResultMap
     }
 
-    protected def filterTests(testRunId, assignedToId, testRailCaseIds, testResultMap, caseResultMap){
+    protected def filterTests(testRunId, assignedToId, testResultMap, caseResultMap){
         Map filteredTestResultMap = testResultMap
         def tests = trc.getTests(testRunId)
-//        logger.debug("TESTS_MAP:\n" + formatJson(tests))
+        logger.debug("TESTS_MAP:\n" + formatJson(tests))
         tests.each { test ->
-            for(testRailCaseId in testRailCaseIds){
-                if (testRailCaseId == test.case_id){
-                    Map resultToAdd = new HashMap()
-                    resultToAdd.test_id = test.id
-                    String testCaseId = test.case_id.toString()
-                    def testCase = caseResultMap.get(testCaseId)
-                    if (!isParamEmpty(testCase)){
-                        resultToAdd.status_id = testCase.status_id
-                        resultToAdd.comment = testCase.testURL + "\n\n" + testCase.comment
-                        resultToAdd.defects = testCase.defects
-                        resultToAdd.assignedto_id = assignedToId
-                        if (resultToAdd.status_id != 3) {
-                            filteredTestResultMap.put(resultToAdd.test_id, resultToAdd)
-                        }
-                        break
-                    }
+            Map resultToAdd = new HashMap()
+            resultToAdd.test_id = test.id
+            String testCaseId = test.case_id.toString()
+            def testCase = caseResultMap.get(testCaseId)
+            if (!isParamEmpty(testCase)){
+                resultToAdd.status_id = testCase.status_id
+                resultToAdd.comment = testCase.testURL + "\n\n" + testCase.comment
+                resultToAdd.defects = testCase.defects
+                resultToAdd.assignedto_id = assignedToId
+                if (resultToAdd.status_id != 3) {
+                    filteredTestResultMap.put(resultToAdd.test_id, resultToAdd)
                 }
+                break
             }
         }
         return filteredTestResultMap
