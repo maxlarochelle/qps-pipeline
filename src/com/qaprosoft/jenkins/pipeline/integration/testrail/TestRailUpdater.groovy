@@ -66,14 +66,9 @@ class TestRailUpdater {
 
         def createdAfter = integration.createdAfter
 
-        // get all cases from TestRail by project and suite and compare with exported from Zafira
-        // only cases available in both maps should be registered later
-        def testRailCaseIds = parseCases(projectId, suiteId)
-        def filteredCaseResultMap = filterCaseResultMap(caseResultMap, testRailCaseIds)
-
         def testRailRunId = null
-        if (!testRunExists){
-            def newTestRailRun = addTestRailRun(testRunName, suiteId, projectId, milestoneId, assignedToId, includeAll, filteredCaseResultMap)
+        if (!testRunExists) {
+            def newTestRailRun = addTestRailRun(testRunName, suiteId, projectId, milestoneId, assignedToId, includeAll, caseResultMap)
             if (isParamEmpty(newTestRailRun)) {
                 logger.error("Unable to add test run to TestRail!")
                 return
@@ -83,8 +78,13 @@ class TestRailUpdater {
             testRailRunId = getTestRailRunId(testRunName, null, milestoneId, projectId, suiteId, createdAfter, Configuration.get("testrail_search_interval"))
         }
 
-        testResultMap = filterTests(testRailRunId, assignedToId, testRailCaseIds, testResultMap, filteredCaseResultMap)
-        addResults(testRailRunId, testResultMap)
+        // get all cases from TestRail by project and suite and compare with exported from Zafira
+        // only cases available in both maps should be registered later
+//        def testRailCaseIds = parseCases(projectId, suiteId)
+//        def filteredCaseResultMap = filterCaseResultMap(caseResultMap, testRailCaseIds)
+
+//        testResultMap = filterTests(testRailRunId, assignedToId, testRailCaseIds, testResultMap, filteredCaseResultMap)
+        addResults(testRailRunId, caseResultMap)
     }
 
     protected def getTestRailRunId(testRunName, createdBy, milestoneId, projectId, suiteId, createdAfter, searchInterval){
