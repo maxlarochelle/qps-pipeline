@@ -141,7 +141,7 @@ class TestRailClient extends HttpClient{
                           httpMode: 'POST',
                           requestBody: "${jsonBuilder}",
                           validResponseCodes: "200:401",
-                          url: this.serviceURL + "add_results_for_cases/${testRunId}"]
+                          url: this.serviceURL + "add_results/${testRunId}"]
         return sendRequestFormatted(parameters)
     }
 }
