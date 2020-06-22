@@ -187,7 +187,6 @@ class TestRailUpdater {
                 if (resultToAdd.status_id != 3) {
                     filteredTestResultMap.put(resultToAdd.test_id, resultToAdd)
                 }
-                break
             }
         }
         return filteredTestResultMap
